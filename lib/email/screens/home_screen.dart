@@ -30,151 +30,166 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(7),
-                child: TextFormField(
-                  controller: fromNameController,
-                  decoration: InputDecoration(
-                    labelText: 'From Name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(7),
+                  child: TextFormField(
+                    controller: fromNameController,
+                    decoration: InputDecoration(
+                      labelText: 'From Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty.';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      // print(value);
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty.';
-                    } else {
-                      return null;
+                ),
+                Container(
+                  margin: const EdgeInsets.all(7),
+                  child: TextFormField(
+                    controller: fromEmailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: 'From Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty.';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      // print(value);
+                    },
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(7),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: toEmailController,
+                    decoration: InputDecoration(
+                      labelText: 'To Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty.';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      // print(value);
+                    },
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(7),
+                  child: TextFormField(
+                    controller: subjectController,
+                    decoration: InputDecoration(
+                      labelText: 'Subject',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty.';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      // print(value);
+                    },
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(7),
+                  child: TextFormField(
+                    controller: messageController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      labelText: 'Message',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty.';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      // print(value);
+                    },
+                  ),
+                ),
+                BlocConsumer<EmailBloc, EmailState>(
+                  listener: (context, state) {
+                    print(state);
+                    if (state is Success) {
+                      animatedSnackBar(
+                        context: context,
+                        message: 'Sent successfully',
+                        animatedSnackBarType: AnimatedSnackBarType.success,
+                      );
+                    }
+                    if (state is Failure) {
+                      animatedSnackBar(
+                        context: context,
+                        message: 'Failed to send',
+                        animatedSnackBarType: AnimatedSnackBarType.error,
+                      );
+                    }
+          
+                    if (state is Sending) {
+                      animatedSnackBar(
+                        context: context,
+                        message: 'Sending',
+                        animatedSnackBarType: AnimatedSnackBarType.info,
+                      );
                     }
                   },
-                  onChanged: (value) {
-                    // print(value);
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(7),
-                child: TextFormField(
-                  controller: fromEmailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'From Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty.';
-                    } else {
-                      return null;
+                  builder: (context, state) {
+                    if (state is Sending) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 7,
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(400, 50),
+                          ),
+                          onPressed: null,
+                          child: loading(),
+                        ),
+                      );
                     }
-                  },
-                  onChanged: (value) {
-                    // print(value);
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(7),
-                child: TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: toEmailController,
-                  decoration: InputDecoration(
-                    labelText: 'To Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty.';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (value) {
-                    // print(value);
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(7),
-                child: TextFormField(
-                  controller: subjectController,
-                  decoration: InputDecoration(
-                    labelText: 'Subject',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty.';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (value) {
-                    // print(value);
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(7),
-                child: TextFormField(
-                  controller: messageController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    labelText: 'Message',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty.';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (value) {
-                    // print(value);
-                  },
-                ),
-              ),
-              BlocConsumer<EmailBloc, EmailState>(
-                listener: (context, state) {
-                  print(state);
-                  if (state is Success) {
-                    animatedSnackBar(
-                      context: context,
-                      message: 'Sent successfully',
-                      animatedSnackBarType: AnimatedSnackBarType.success,
-                    );
-                  }
-                  if (state is Failure) {
-                    animatedSnackBar(
-                      context: context,
-                      message: 'Failed to send',
-                      animatedSnackBarType: AnimatedSnackBarType.error,
-                    );
-                  }
-
-                  if (state is Sending) {
-                    animatedSnackBar(
-                      context: context,
-                      message: 'Sending',
-                      animatedSnackBarType: AnimatedSnackBarType.info,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is Sending) {
                     return Container(
                       margin: const EdgeInsets.symmetric(
                         vertical: 10,
@@ -184,48 +199,35 @@ class HomeScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(400, 50),
                         ),
-                        onPressed: null,
-                        child: loading(),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            bloc.add(
+                              SendEmailEvent(
+                                emailModel: EmailModel(
+                                  fromName: fromNameController.text,
+                                  fromEmail: fromEmailController.text,
+                                  toEmail: toEmailController.text,
+                                  subject: subjectController.text,
+                                  message: messageController.text,
+                                ),
+                              ),
+                            );
+                          }
+                          if (!_formKey.currentState!.validate()) {
+                            animatedSnackBar(
+                              context: context,
+                              message: 'Failed to validate form',
+                              animatedSnackBarType: AnimatedSnackBarType.error,
+                            );
+                          }
+                        },
+                        child: const Text('Send Email'),
                       ),
                     );
-                  }
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 7,
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(400, 50),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          bloc.add(
-                            SendEmailEvent(
-                              emailModel: EmailModel(
-                                fromName: fromNameController.text,
-                                fromEmail: fromEmailController.text,
-                                toEmail: toEmailController.text,
-                                subject: subjectController.text,
-                                message: messageController.text,
-                              ),
-                            ),
-                          );
-                        }
-                        if (!_formKey.currentState!.validate()) {
-                          animatedSnackBar(
-                            context: context,
-                            message: 'Failed to validate form',
-                            animatedSnackBarType: AnimatedSnackBarType.error,
-                          );
-                        }
-                      },
-                      child: const Text('Send Email'),
-                    ),
-                  );
-                },
-              )
-            ],
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
