@@ -21,7 +21,7 @@ class EmailProvider {
       },
     };
 
-    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send/');
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
     final response = await http.post(
       url,
       headers: {
